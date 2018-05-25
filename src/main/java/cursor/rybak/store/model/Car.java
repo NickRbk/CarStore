@@ -21,8 +21,12 @@ public class Car {
     @JoinColumn(name = "car_kind_id")
     private CarKind carKind;
 
-    private String country_of_registration;
+    @Column(name = "country_of_registration")
+    private String countryOfRegistration;
+
     private String description;
+
+    @Column(name = "timeOnApp")
     private LocalDate time_on_app;
 
     @ManyToOne

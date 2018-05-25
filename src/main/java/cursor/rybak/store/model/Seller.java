@@ -14,9 +14,18 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String first_name;
-    private String last_name;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     private String password;
-    private LocalDate time_on_app;
-    private String mobile_phone;
+
+    @Column(name = "time_on_app")
+    private LocalDate timeOnApp;
+
+    @Column(name = "mobile_phone")
+    private String mobilePhone;
 }
