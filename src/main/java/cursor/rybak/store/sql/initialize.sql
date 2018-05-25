@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS sellers (
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(15) NOT NULL,
 	last_name VARCHAR(15) NOT NULL,
+  password VARCHAR(15) NOT NULL,
 	time_on_app TIMESTAMP NOT NULL,
 	phone_number VARCHAR(15) NOT NULL
 );

@@ -16,6 +16,7 @@ public class Seller {
     private Integer id;
     private String first_name;
     private String last_name;
+    private String password;
     private LocalDate time_on_app;
     private String mobile_phone;
 }
