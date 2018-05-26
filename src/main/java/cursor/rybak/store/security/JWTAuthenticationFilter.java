@@ -1,7 +1,7 @@
 package cursor.rybak.store.security;
 
-import com.auth0.samples.authapi.user.ApplicationUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cursor.rybak.store.model.Seller;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +24,7 @@ import static cursor.rybak.store.security.SecurityConstants.*;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private AuthenticationManager authenticationManager;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+	JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
 
@@ -32,12 +32,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
 		try {
-			ApplicationUser creds = new ObjectMapper()
-					.readValue(req.getInputStream(), ApplicationUser.class);
+			Seller creds = new ObjectMapper()
+					.readValue(req.getInputStream(), Seller.class);
 
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
-							creds.getUsername(),
+							creds.getEmail(),
 							creds.getPassword(),
 							new ArrayList<>())
 			);

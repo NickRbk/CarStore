@@ -4,28 +4,35 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "sellers")
-public class Seller {
+public class Seller extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
+    @Email(message = "INVALID EMAIL")
+    @Column(unique = true)
+    private String email;
 
     @Column(name = "first_name")
+    @Size(min = 3, max = 15)
     private String firstName;
 
     @Column(name = "last_name")
+    @Size(min = 3, max = 15)
     private String lastName;
 
+    @NotNull
     private String password;
 
-    @Column(name = "time_on_app")
-    private LocalDate timeOnApp;
-
-    @Column(name = "mobile_phone")
-    private String mobilePhone;
+    @Column(name = "phone_number")
+    @Size(min = 10, max = 20)
+    private String phoneNumber;
 }

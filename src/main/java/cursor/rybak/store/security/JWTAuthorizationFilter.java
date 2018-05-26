@@ -17,7 +17,7 @@ import static cursor.rybak.store.security.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
+	JWTAuthorizationFilter(AuthenticationManager authManager) {
 		super(authManager);
 	}
 
