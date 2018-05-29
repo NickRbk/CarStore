@@ -24,8 +24,8 @@ public class SellerController {
 		sellerRepository.save(seller);
 	}
 
-//	@GetMapping("/success-logout")
-//	public String logout() {
-//		return "Logout success!";
-//	}
+	@GetMapping("/success-logout")
+	public String logout() {
+		return "Logout success!";
+	}
 }
