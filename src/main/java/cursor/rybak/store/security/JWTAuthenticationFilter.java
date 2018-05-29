@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static cursor.rybak.store.security.SecurityConstants.*;
-
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements SecurityConstants {
 	private AuthenticationManager authenticationManager;
 
 	JWTAuthenticationFilter(AuthenticationManager authenticationManager) {

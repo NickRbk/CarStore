@@ -3,10 +3,7 @@ package cursor.rybak.store.controller;
 import cursor.rybak.store.model.Seller;
 import cursor.rybak.store.repository.seller.SellerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sellers")
@@ -26,4 +23,9 @@ public class SellerController {
 		seller.setPassword(bCryptPasswordEncoder.encode(seller.getPassword()));
 		sellerRepository.save(seller);
 	}
+
+//	@GetMapping("/success-logout")
+//	public String logout() {
+//		return "Logout success!";
+//	}
 }
