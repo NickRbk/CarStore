@@ -6,5 +6,4 @@ public interface SecurityConstants {
 	String TOKEN_PREFIX = "Bearer ";
 	String HEADER_STRING = "Authorization";
 	String SIGN_UP_URL = "/sellers/sign-up";
-	String SUCCESS_LOGOUT_URL = "/success-logout";
 }

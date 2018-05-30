@@ -23,9 +23,4 @@ public class SellerController {
 		seller.setPassword(bCryptPasswordEncoder.encode(seller.getPassword()));
 		sellerRepository.save(seller);
 	}
-
-	@GetMapping("/success-logout")
-	public String logout() {
-		return "Logout success!";
-	}
 }
