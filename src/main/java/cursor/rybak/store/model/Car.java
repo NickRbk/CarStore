@@ -1,6 +1,5 @@
 package cursor.rybak.store.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -28,6 +27,10 @@ public class Car extends Audit {
     @NotEmpty
     @NotNull
     private String countryOfRegistration;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "car_kind_id", nullable = false)
+    private CarKind carKind;
 
     @NotNull
     private String description;
