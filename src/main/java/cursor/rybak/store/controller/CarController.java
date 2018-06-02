@@ -1,6 +1,6 @@
 package cursor.rybak.store.controller;
 
-import cursor.rybak.store.exception.ResourceNotFoundException;
+import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.model.Car;
 import cursor.rybak.store.repository.car.CarRepository;
 import cursor.rybak.store.repository.seller.SellerRepository;
@@ -39,7 +39,7 @@ public class CarController {
                 .map(seller -> {
                     car.setSeller(seller);
                     return carRepository.save(car);
-                }).orElseThrow(() -> new ResourceNotFoundException("SellerId " + sellerId + " not found!"));
+                }).orElseThrow(() -> new NotFoundException("SellerId " + sellerId + " not found!"));
     }
 
     @PutMapping("/sellers/{sellerId}/cars/{carId}")
@@ -48,13 +48,13 @@ public class CarController {
                          @Valid @RequestBody Car carReq) {
 
         if(!sellerRepository.existsById(sellerId)) {
-            throw new ResourceNotFoundException("SellerId " + carId + " not found!");
+            throw new NotFoundException("SellerId " + carId + " not found!");
         }
 
         return carRepository.findById(carId).map(car -> {
             car.setDescription(carReq.getDescription());
             return carRepository.save(car);
-        }).orElseThrow(() -> new ResourceNotFoundException("CarId " + carId + "not found"));
+        }).orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
     }
 
     @DeleteMapping("/sellers/{sellerId}/cars/{carId}")
@@ -62,12 +62,12 @@ public class CarController {
                                        @PathVariable(value = "carId") Long carId) {
 
         if(!sellerRepository.existsById(sellerId)) {
-            throw new ResourceNotFoundException("SellerId " + carId + " not found!");
+            throw new NotFoundException("SellerId " + carId + " not found!");
         }
 
         return carRepository.findById(carId).map(car -> {
             carRepository.delete(car);
             return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("CarId " + carId + "not found"));
+        }).orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
     }
 }
