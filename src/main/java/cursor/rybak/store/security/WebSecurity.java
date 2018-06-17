@@ -1,6 +1,5 @@
 package cursor.rybak.store.security;
 
-import cursor.rybak.store.repository.seller.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package cursor.rybak.store.service;
+package cursor.rybak.store.service.car;
 
 import cursor.rybak.store.model.Car;
 import org.springframework.data.domain.Page;
