@@ -28,9 +28,17 @@ public class Car extends Audit {
     @NotNull
     private String countryOfRegistration;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "car_kind_id", nullable = false)
-//    private CarKind carKind;
+    @NotEmpty
+    @NotNull
+    private String type;
+
+    @NotEmpty
+    @NotNull
+    private String model;
+
+    @NotEmpty
+    @NotNull
+    private String mark;
 
     @NotNull
     private String description;
