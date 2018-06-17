@@ -76,7 +76,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="BRAND" type="VARCHAR(30)">
+            <column name="MARK" type="VARCHAR(30)">
                 <constraints nullable="false" />
             </column>
 
