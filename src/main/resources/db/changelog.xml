@@ -87,7 +87,7 @@
             <column name="SELLER_ID" type="BIGINT">
                 <constraints nullable="false"
                              foreignKeyName="fk_seller_id"
-                             references="cars(id)" />
+                             references="sellers(id)" />
             </column>
 
             <column name="CREATED_AT" type="TIMESTAMP WITHOUT TIME ZONE">
