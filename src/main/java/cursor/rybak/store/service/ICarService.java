@@ -1,11 +1,11 @@
-package cursor.rybak.store.service.car;
+package cursor.rybak.store.service;
 
 import cursor.rybak.store.domain.model.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-public interface CarService {
+public interface ICarService {
     Page<Car> getAll(Pageable pageable);
 
     Page<Car> getAllCarsBySellerId(Long sellerId, Pageable pageable);

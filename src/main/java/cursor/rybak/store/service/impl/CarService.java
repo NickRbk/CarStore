@@ -1,10 +1,10 @@
-package cursor.rybak.store.service.car.impl;
+package cursor.rybak.store.service.impl;
 
 import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.domain.model.Car;
-import cursor.rybak.store.domain.repository.car.CarRepository;
-import cursor.rybak.store.domain.repository.seller.SellerRepository;
-import cursor.rybak.store.service.car.CarService;
+import cursor.rybak.store.domain.repository.CarRepository;
+import cursor.rybak.store.domain.repository.SellerRepository;
+import cursor.rybak.store.service.ICarService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CarServiceImpl implements CarService {
+public class CarService implements ICarService {
 
     private CarRepository carRepository;
     private SellerRepository sellerRepository;

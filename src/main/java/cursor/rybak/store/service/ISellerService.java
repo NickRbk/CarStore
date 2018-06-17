@@ -1,7 +1,7 @@
-package cursor.rybak.store.service.seller;
+package cursor.rybak.store.service;
 
 import cursor.rybak.store.domain.model.Seller;
 
-public interface SellerService {
+public interface ISellerService {
     Seller signUp(Seller seller);
 }

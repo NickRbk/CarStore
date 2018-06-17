@@ -1,7 +1,7 @@
 package cursor.rybak.store.web.controller;
 
 import cursor.rybak.store.domain.model.Car;
-import cursor.rybak.store.service.car.CarService;
+import cursor.rybak.store.service.ICarService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class CarController {
 
-    private CarService carService;
+    private ICarService carService;
 
     @GetMapping("/sellers/{sellerId}/cars")
     public Page<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId,

@@ -1,15 +1,15 @@
-package cursor.rybak.store.service.seller.impl;
+package cursor.rybak.store.service.impl;
 
 import cursor.rybak.store.domain.model.Seller;
-import cursor.rybak.store.domain.repository.seller.SellerRepository;
-import cursor.rybak.store.service.seller.SellerService;
+import cursor.rybak.store.domain.repository.SellerRepository;
+import cursor.rybak.store.service.ISellerService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class SellerServiceImpl implements SellerService {
+public class SellerService implements ISellerService {
 
     private SellerRepository sellerRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;

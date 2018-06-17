@@ -1,5 +1,6 @@
 package cursor.rybak.store.domain.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
+@Builder
 @Entity
 @Table(name = "cars")
 public class Car extends Audit {

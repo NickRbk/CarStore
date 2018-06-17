@@ -1,5 +1,6 @@
 package cursor.rybak.store.domain.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Setter
 @Getter
+@Builder
 @Entity
 @Table(name = "sellers")
 public class Seller extends Audit {

@@ -1,4 +1,4 @@
-package cursor.rybak.store.domain.repository.seller;
+package cursor.rybak.store.domain.repository;
 
 import cursor.rybak.store.domain.model.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
