@@ -1,14 +1,14 @@
 package cursor.rybak.store.domain.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "sellers")

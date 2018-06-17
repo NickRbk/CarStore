@@ -1,10 +1,11 @@
 package cursor.rybak.store.service.impl;
 
-import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
+import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.service.ICarService;
+import cursor.rybak.store.web.dto.CarDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +30,21 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Car add(Long sellerId, Car car) {
+    public Car add(Long sellerId, CarDTO carDTO) {
         return sellerRepository
                 .findById(sellerId)
-                .map(seller -> {
-                    car.setSeller(seller);
-                    return carRepository.save(car);
-                })
+                .map(seller -> carRepository.save(Car.builder()
+                                .price(carDTO.getPrice())
+                                .year(carDTO.getYear())
+                                .countryOfRegistration(carDTO.getCountryOfRegistration())
+                                .type(carDTO.getType())
+                                .model(carDTO.getModel())
+                                .mark(carDTO.getMark())
+                                .description(carDTO.getDescription())
+                                .seller(seller)
+                                .build()
+                        )
+                )
                 .orElseThrow(() -> new NotFoundException("SellerId " + sellerId + " not found!"));
     }
 

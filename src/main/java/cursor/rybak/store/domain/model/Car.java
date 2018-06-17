@@ -1,8 +1,6 @@
 package cursor.rybak.store.domain.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -10,6 +8,8 @@ import javax.persistence.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "cars")
@@ -18,7 +18,7 @@ public class Car extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer price;
+    private Double price;
 
     private Integer year;
 
