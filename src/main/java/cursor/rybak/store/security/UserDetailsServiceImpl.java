@@ -1,7 +1,7 @@
 package cursor.rybak.store.security;
 
-import cursor.rybak.store.model.Seller;
-import cursor.rybak.store.repository.seller.SellerRepository;
+import cursor.rybak.store.domain.model.Seller;
+import cursor.rybak.store.domain.repository.seller.SellerRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

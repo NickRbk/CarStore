@@ -1,9 +1,9 @@
 package cursor.rybak.store.service.car.impl;
 
 import cursor.rybak.store.exception.NotFoundException;
-import cursor.rybak.store.model.Car;
-import cursor.rybak.store.repository.car.CarRepository;
-import cursor.rybak.store.repository.seller.SellerRepository;
+import cursor.rybak.store.domain.model.Car;
+import cursor.rybak.store.domain.repository.car.CarRepository;
+import cursor.rybak.store.domain.repository.seller.SellerRepository;
 import cursor.rybak.store.service.car.CarService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package cursor.rybak.store.service.car;
 
-import cursor.rybak.store.model.Car;
+import cursor.rybak.store.domain.model.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

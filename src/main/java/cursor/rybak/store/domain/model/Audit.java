@@ -1,4 +1,4 @@
-package cursor.rybak.store.model;
+package cursor.rybak.store.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

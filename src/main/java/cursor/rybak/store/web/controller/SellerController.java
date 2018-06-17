@@ -1,6 +1,6 @@
-package cursor.rybak.store.controller;
+package cursor.rybak.store.web.controller;
 
-import cursor.rybak.store.model.Seller;
+import cursor.rybak.store.domain.model.Seller;
 import cursor.rybak.store.service.seller.SellerService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

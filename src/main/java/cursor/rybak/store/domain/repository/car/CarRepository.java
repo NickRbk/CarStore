@@ -1,6 +1,6 @@
-package cursor.rybak.store.repository.car;
+package cursor.rybak.store.domain.repository.car;
 
-import cursor.rybak.store.model.Car;
+import cursor.rybak.store.domain.model.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

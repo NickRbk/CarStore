@@ -1,6 +1,6 @@
-package cursor.rybak.store.controller;
+package cursor.rybak.store.web.controller;
 
-import cursor.rybak.store.model.Car;
+import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.service.car.CarService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

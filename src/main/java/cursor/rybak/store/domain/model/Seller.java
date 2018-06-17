@@ -1,4 +1,4 @@
-package cursor.rybak.store.model;
+package cursor.rybak.store.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
