@@ -2,14 +2,15 @@ package cursor.rybak.store.service;
 
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.web.dto.CarDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-public interface ICarService {
-    Page<Car> getAll(Pageable pageable);
+import java.util.stream.Stream;
 
-    Page<Car> getAllCarsBySellerId(Long sellerId, Pageable pageable);
+public interface ICarService {
+
+    Stream<Car> getAllAsStream();
+
+    Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId);
 
     Car add(Long sellerId, CarDTO carDTO);
 

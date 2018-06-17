@@ -7,10 +7,10 @@ import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.web.dto.CarDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -20,13 +20,13 @@ public class CarService implements ICarService {
     private SellerRepository sellerRepository;
 
     @Override
-    public Page<Car> getAll(Pageable pageable) {
-        return carRepository.findAll(pageable);
+    public Stream<Car> getAllAsStream() {
+        return carRepository.getAll();
     }
 
     @Override
-    public Page<Car> getAllCarsBySellerId(Long sellerId, Pageable pageable) {
-        return carRepository.findBySellerId(sellerId, pageable);
+    public Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId) {
+        return carRepository.findBySellerId(sellerId);
     }
 
     @Override

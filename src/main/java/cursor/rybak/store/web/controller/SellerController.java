@@ -7,13 +7,14 @@ import cursor.rybak.store.service.ISellerService;
 import cursor.rybak.store.web.dto.CarDTO;
 import cursor.rybak.store.web.dto.SellerDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -26,19 +27,21 @@ public class SellerController {
 
     @PostMapping("/sign-up")
     public Seller signUp(@RequestBody
-                             @NotNull
-                             @Valid SellerDTO sellerDTO) {
+                         @NotNull
+                         @Valid SellerDTO sellerDTO) {
 
         return sellerService.signUp(sellerDTO);
     }
 
+    @Transactional
     @GetMapping("/{sellerId}/cars")
-    public Page<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId,
-                                          Pageable pageable) {
+    public List<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId) {
 
-        return carService.getAllCarsBySellerId(sellerId, pageable);
+        return carService.getAllCarsBySellerIdAsStream(sellerId)
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     @PostMapping("/{sellerId}/cars")
     public Car addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
                                 @RequestBody
