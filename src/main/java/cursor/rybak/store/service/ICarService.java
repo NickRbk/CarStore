@@ -4,6 +4,7 @@ import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.web.dto.CarDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface ICarService {
@@ -14,7 +15,7 @@ public interface ICarService {
 
     Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId);
 
-    Car add(Long sellerId, CarDTO carDTO);
+    List<Car> add(Long sellerId, List<CarDTO> carDTOs);
 
     Car update(Long sellerId, Long carId, Car car);
 

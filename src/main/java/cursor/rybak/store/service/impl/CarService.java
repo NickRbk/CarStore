@@ -1,6 +1,7 @@
 package cursor.rybak.store.service.impl;
 
 import cursor.rybak.store.domain.model.Car;
+import cursor.rybak.store.domain.model.Seller;
 import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
 import cursor.rybak.store.exception.NotFoundException;
@@ -10,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -35,22 +38,27 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Car add(Long sellerId, CarDTO carDTO) {
-        return sellerRepository
-                .findById(sellerId)
-                .map(seller -> carRepository.save(Car.builder()
-                                .price(carDTO.getPrice())
-                                .year(carDTO.getYear())
-                                .countryOfRegistration(carDTO.getCountryOfRegistration())
-                                .type(carDTO.getType())
-                                .model(carDTO.getModel())
-                                .mark(carDTO.getMark())
-                                .description(carDTO.getDescription())
-                                .seller(seller)
-                                .build()
-                        )
-                )
+    public List<Car> add(Long sellerId, List<CarDTO> carDTOs) {
+        List<Car> newCars = new ArrayList<>();
+
+        Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("SellerId " + sellerId + " not found!"));
+
+        carDTOs.forEach(carDTO -> newCars.add(
+                carRepository.save(Car.builder()
+                        .price(carDTO.getPrice())
+                        .year(carDTO.getYear())
+                        .countryOfRegistration(carDTO.getCountryOfRegistration())
+                        .type(carDTO.getType())
+                        .model(carDTO.getModel())
+                        .mark(carDTO.getMark())
+                        .description(carDTO.getDescription())
+                        .seller(seller)
+                        .build()
+                )
+        ));
+
+        return newCars;
     }
 
     @Override

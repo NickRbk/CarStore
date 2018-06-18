@@ -49,12 +49,12 @@ public class SellerController {
 
     @Transactional
     @PostMapping("/{sellerId}/cars")
-    public Car addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
+    public List<Car> addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
                                 @RequestBody
                                 @NotNull
-                                @Valid CarDTO carDTO) {
+                                @Valid List<CarDTO> carDTOs) {
 
-        return carService.add(sellerId, carDTO);
+        return carService.add(sellerId, carDTOs);
     }
 
     @DeleteMapping("/{sellerId}/cars/{carId}")
