@@ -14,4 +14,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     Stream<Car> getAll();
 
     Stream<Car> findBySellerId(Long sellerId);
+
+    Car getCarByIdAndSellerId(Long carId, Long sellerId);
 }

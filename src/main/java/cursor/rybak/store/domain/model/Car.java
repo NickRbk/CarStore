@@ -12,26 +12,27 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 @Table(name = "cars")
 public class Car extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double price;
+    public Double price;
 
-    private Integer year;
+    public Integer year;
 
     @Column(name = "country_of_registration")
-    private String countryOfRegistration;
+    public String countryOfRegistration;
 
-    private String type;
+    public String type;
 
-    private String model;
+    public String model;
 
-    private String mark;
+    public String mark;
 
-    private String description;
+    public String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", nullable = false)

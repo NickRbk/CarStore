@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 @Table(name = "sellers")
 public class Seller extends Audit {
     @Id

@@ -8,13 +8,15 @@ import java.util.stream.Stream;
 
 public interface ICarService {
 
+    Car getCar(Long carId, Long sellerId);
+
     Stream<Car> getAllAsStream();
 
     Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId);
 
     Car add(Long sellerId, CarDTO carDTO);
 
-    Car update(Long sellerId, Long carId, Car carReq);
+    Car update(Long sellerId, Long carId, Car car);
 
     ResponseEntity<?> delete(Long sellerId, Long carId);
 }

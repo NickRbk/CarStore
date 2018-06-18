@@ -20,6 +20,11 @@ public class CarService implements ICarService {
     private SellerRepository sellerRepository;
 
     @Override
+    public Car getCar(Long carId, Long sellerId) {
+        return carRepository.getCarByIdAndSellerId(carId, sellerId);
+    }
+
+    @Override
     public Stream<Car> getAllAsStream() {
         return carRepository.getAll();
     }
@@ -49,21 +54,6 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Car update(Long sellerId, Long carId, Car carReq) {
-        if (!sellerRepository.existsById(sellerId)) {
-            throw new NotFoundException("SellerId " + carId + " not found!");
-        }
-
-        return carRepository
-                .findById(carId)
-                .map(car -> {
-                    car.setDescription(carReq.getDescription());
-                    return carRepository.save(car);
-                })
-                .orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
-    }
-
-    @Override
     public ResponseEntity<?> delete(Long sellerId, Long carId) {
         if (!sellerRepository.existsById(sellerId)) {
             throw new NotFoundException("SellerId " + carId + " not found!");
@@ -72,8 +62,21 @@ public class CarService implements ICarService {
         return carRepository.findById(carId)
                 .map(car -> {
                     carRepository.delete(car);
-                    return ResponseEntity.ok().build();
+                    return ResponseEntity.ok()
+                            .body("CarId " + carId + " deleted successfully");
                 })
+                .orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
+    }
+
+    @Override
+    public Car update(Long sellerId, Long carId, Car carReq) {
+        if (!sellerRepository.existsById(sellerId)) {
+            throw new NotFoundException("SellerId " + carId + " not found!");
+        }
+
+        return carRepository
+                .findById(carId)
+                .map(carRepository::save)
                 .orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
     }
 }

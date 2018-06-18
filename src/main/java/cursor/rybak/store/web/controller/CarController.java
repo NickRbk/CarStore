@@ -44,11 +44,4 @@ public class CarController {
 //
 //        return carService.update(sellerId, carId, carReq);
 //    }
-//
-//    @DeleteMapping("/sellers/{sellerId}/cars/{carId}")
-//    public ResponseEntity<?> deleteCarByCarId(@PathVariable(value = "sellerId") Long sellerId,
-//                                              @PathVariable(value = "carId") Long carId) {
-//
-//        return carService.delete(sellerId, carId);
-//    }
 }
