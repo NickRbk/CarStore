@@ -34,6 +34,7 @@ public class SortCarMap {
         sortedMap.put("year", this::getAllCarOrderByYear);
         sortedMap.put("price", this::getAllCarOrderByPrice);
         sortedMap.put("registration", this::getAllCarOrderByRegistration);
+
         return sortedMap;
     }
 
