@@ -2,6 +2,7 @@ package cursor.rybak.store.security;
 
 import cursor.rybak.store.domain.model.Seller;
 import cursor.rybak.store.domain.repository.SellerRepository;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (seller == null) {
             throw new UsernameNotFoundException(email);
         }
-        return new CustomUser(seller.getEmail(), seller.getPassword(), emptyList(), seller.getId());
+        return new User(seller.getEmail(), seller.getPassword(), emptyList());
     }
 }

@@ -51,7 +51,7 @@ public class CarService implements ICarService {
         List<Car> newCars = new ArrayList<>();
 
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new NotFoundException("SellerId " + sellerId + " not found!"));
+                .orElseThrow(NotFoundException::new);
 
         carDTOs.forEach(carDTO -> newCars.add(
                 carRepository.save(Car.builder()
@@ -73,7 +73,7 @@ public class CarService implements ICarService {
     @Override
     public ResponseEntity<?> delete(Long sellerId, Long carId) {
         if (!sellerRepository.existsById(sellerId)) {
-            throw new NotFoundException("SellerId " + carId + " not found!");
+            throw new NotFoundException();
         }
 
         return carRepository.findById(carId)
@@ -82,18 +82,18 @@ public class CarService implements ICarService {
                     return ResponseEntity.ok()
                             .body("CarId " + carId + " deleted successfully");
                 })
-                .orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
+                .orElseThrow(NotFoundException::new);
     }
 
     @Override
     public Car update(Long sellerId, Long carId, Car carReq) {
         if (!sellerRepository.existsById(sellerId)) {
-            throw new NotFoundException("SellerId " + carId + " not found!");
+            throw new NotFoundException();
         }
 
         return carRepository
                 .findById(carId)
                 .map(carRepository::save)
-                .orElseThrow(() -> new NotFoundException("CarId " + carId + "not found"));
+                .orElseThrow(NotFoundException::new);
     }
 }

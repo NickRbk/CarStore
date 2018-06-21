@@ -26,4 +26,9 @@ public class SellerService implements ISellerService {
                 .build()
         );
     }
+
+    @Override
+    public Long getSellerId(String email) {
+        return sellerRepository.findSellerIdByEmail(email);
+    }
 }

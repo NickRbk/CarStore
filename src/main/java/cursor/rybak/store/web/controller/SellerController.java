@@ -2,12 +2,14 @@ package cursor.rybak.store.web.controller;
 
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.model.Seller;
+import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.service.ISellerService;
 import cursor.rybak.store.web.dto.CarDTO;
 import cursor.rybak.store.web.dto.SellerDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -39,10 +41,14 @@ public class SellerController {
 
     @Transactional
     @GetMapping("/{sellerId}/cars")
-    public List<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId) {
+    public List<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId,
+                                          Authentication authentication) {
 
-        return carService.getAllCarsBySellerIdAsStream(sellerId)
-                .collect(Collectors.toList());
+
+        if (isAuthorized(authentication, sellerId)) {
+            return carService.getAllCarsBySellerIdAsStream(sellerId)
+                    .collect(Collectors.toList());
+        } else throw new UnauthorizedException();
     }
 
     @Transactional
@@ -50,31 +56,44 @@ public class SellerController {
     public List<Car> addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
                                       @RequestBody
                                       @NotNull
-                                      @Valid List<CarDTO> carDTOs) {
+                                      @Valid List<CarDTO> carDTOs,
+                                      Authentication authentication) {
 
-        return carService.add(sellerId, carDTOs);
+        if (isAuthorized(authentication, sellerId)) {
+            return carService.add(sellerId, carDTOs);
+        } else throw new UnauthorizedException();
     }
 
     @DeleteMapping("/{sellerId}/cars/{carId}")
     public ResponseEntity<?> deleteCarByCarId(@PathVariable(value = "sellerId") Long sellerId,
-                                              @PathVariable(value = "carId") Long carId) {
+                                              @PathVariable(value = "carId") Long carId,
+                                              Authentication authentication) {
 
-        return carService.delete(sellerId, carId);
+        if (isAuthorized(authentication, sellerId)) {
+            return carService.delete(sellerId, carId);
+        } else throw new UnauthorizedException();
     }
 
     @PatchMapping("/{sellerId}/cars/{carId}")
     public Car updateCar(@PathVariable Long sellerId,
                          @PathVariable Long carId,
-                         @RequestBody Map<String, Object> fields) {
+                         @RequestBody Map<String, Object> fields,
+                         Authentication authentication) {
 
 
-        Car car = carService.getCar(carId, sellerId);
+        if (isAuthorized(authentication, sellerId)) {
+            Car car = carService.getCar(carId, sellerId);
 
-        fields.forEach((K, V) -> {
-            Field field = ReflectionUtils.findField(Car.class, K);
-            ReflectionUtils.setField(field, car, V);
-        });
+            fields.forEach((K, V) -> {
+                Field field = ReflectionUtils.findField(Car.class, K);
+                ReflectionUtils.setField(field, car, V);
+            });
 
-        return carService.update(sellerId, carId, car);
+            return carService.update(sellerId, carId, car);
+        } else throw new UnauthorizedException();
+    }
+
+    private Boolean isAuthorized(Authentication authentication, Long id) {
+        return sellerService.getSellerId((String) authentication.getPrincipal()).equals(id);
     }
 }
