@@ -7,7 +7,6 @@ import cursor.rybak.store.service.ISellerService;
 import cursor.rybak.store.web.dto.CarDTO;
 import cursor.rybak.store.web.dto.SellerDTO;
 import lombok.AllArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +48,9 @@ public class SellerController {
     @Transactional
     @PostMapping("/{sellerId}/cars")
     public List<Car> addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
-                                @RequestBody
-                                @NotNull
-                                @Valid List<CarDTO> carDTOs) {
+                                      @RequestBody
+                                      @NotNull
+                                      @Valid List<CarDTO> carDTOs) {
 
         return carService.add(sellerId, carDTOs);
     }
@@ -65,9 +63,9 @@ public class SellerController {
     }
 
     @PatchMapping("/{sellerId}/cars/{carId}")
-    public Car updateCarByCarId(@PathVariable Long sellerId,
-                                 @PathVariable Long carId,
-                                 @RequestBody Map<String, Object> fields) {
+    public Car updateCar(@PathVariable Long sellerId,
+                         @PathVariable Long carId,
+                         @RequestBody Map<String, Object> fields) {
 
 
         Car car = carService.getCar(carId, sellerId);

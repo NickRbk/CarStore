@@ -13,6 +13,8 @@ public interface ICarService {
 
     Stream<Car> getAllAsStream();
 
+    Stream<Car> getAllSortedByKeyAsStream(String key);
+
     Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId);
 
     List<Car> add(Long sellerId, List<CarDTO> carDTOs);

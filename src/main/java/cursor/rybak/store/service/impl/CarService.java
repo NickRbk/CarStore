@@ -6,6 +6,7 @@ import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
 import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.service.ICarService;
+import cursor.rybak.store.sort.SortCarMap;
 import cursor.rybak.store.web.dto.CarDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,14 @@ public class CarService implements ICarService {
     @Override
     public Stream<Car> getAllAsStream() {
         return carRepository.getAll();
+    }
+
+    @Override
+    public Stream<Car> getAllSortedByKeyAsStream(String key) {
+        return SortCarMap.getInstance(carRepository)
+                .getSortedMap()
+                .get(key)
+                .get();
     }
 
     @Override
