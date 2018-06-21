@@ -32,7 +32,7 @@ public class CarController {
     @Transactional
     @GetMapping("/car")
     public List<Car> getAllCarsSortedBy(@RequestParam("sortedBy") String key) {
-        
+
         return carService.getAllSortedByKeyAsStream(key)
                 .collect(Collectors.toList());
     }
