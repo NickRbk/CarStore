@@ -105,6 +105,9 @@ There are the below routes for Buyers:
    
    `/store/car?orderBy=registration`
    
-#### Prerequisites:
+#### Prerequisites !!!
 - app should be run with "dev" profile
 - start postgreSQL and write actual info into `application-dev.yml`.
+
+### How to start app?
+`mvn spring-boot:run -Dspring.profiles.active=dev`
