@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class SortCarMap {
+public class SortCarMap implements SortConstants {
     private static SortCarMap instance;
 
     private final CarRepository carRepository;
@@ -31,9 +31,9 @@ public class SortCarMap {
 
     private Map<String, Supplier<Stream<Car>>> generateSortedMap() {
         Map<String, Supplier<Stream<Car>>> sortedMap = new HashMap<>();
-        sortedMap.put("year", this::getAllCarOrderByYear);
-        sortedMap.put("price", this::getAllCarOrderByPrice);
-        sortedMap.put("registration", this::getAllCarOrderByRegistration);
+        sortedMap.put(YEAR, this::getAllCarOrderByYear);
+        sortedMap.put(PRICE, this::getAllCarOrderByPrice);
+        sortedMap.put(REGISTRATION, this::getAllCarOrderByRegistration);
 
         return sortedMap;
     }

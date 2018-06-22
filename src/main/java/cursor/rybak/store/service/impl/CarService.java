@@ -4,6 +4,7 @@ import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.model.Seller;
 import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
+import cursor.rybak.store.exception.InvalidParameterException;
 import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.sort.SortCarMap;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static cursor.rybak.store.sort.SortConstants.SORT_CRITERIA;
 
 @Service
 @AllArgsConstructor
@@ -35,10 +38,13 @@ public class CarService implements ICarService {
 
     @Override
     public Stream<Car> getAllSortedByKeyAsStream(String key) {
-        return SortCarMap.getInstance(carRepository)
-                .getSortedMap()
-                .get(key)
-                .get();
+
+        if( isValidCriteria(key) ) {
+            return SortCarMap.getInstance(carRepository)
+                    .getSortedMap()
+                    .get(key)
+                    .get();
+        } else throw new InvalidParameterException();
     }
 
     @Override
@@ -95,5 +101,10 @@ public class CarService implements ICarService {
                 .findById(carId)
                 .map(carRepository::save)
                 .orElseThrow(NotFoundException::new);
+    }
+
+    private boolean isValidCriteria(String criteria) {
+        return SORT_CRITERIA.stream()
+                .anyMatch(c -> c.equals(criteria));
     }
 }
