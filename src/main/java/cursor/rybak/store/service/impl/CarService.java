@@ -6,6 +6,7 @@ import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
 import cursor.rybak.store.exception.InvalidParameterException;
 import cursor.rybak.store.exception.NotFoundException;
+import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.sort.SortCarMap;
 import cursor.rybak.store.web.dto.CarDTO;
@@ -77,29 +78,35 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public ResponseEntity<?> delete(Long sellerId, Long carId) {
+    public ResponseEntity<?> delete(Long sellerId, Long carId, String email) {
         if (!sellerRepository.existsById(sellerId)) {
             throw new NotFoundException();
         }
 
         return carRepository.findById(carId)
                 .map(car -> {
-                    carRepository.delete(car);
-                    return ResponseEntity.ok()
-                            .body("CarId " + carId + " deleted successfully");
+                    if(car.getSeller().getEmail().equals(email)) {
+                        carRepository.delete(car);
+                        return ResponseEntity.ok()
+                                .body("CarId " + carId + " deleted successfully");
+                    } else throw new UnauthorizedException();
                 })
                 .orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public Car update(Long sellerId, Long carId, Car carReq) {
+    public Car update(Long sellerId, Long carId, Car updatedCar, String email) {
         if (!sellerRepository.existsById(sellerId)) {
             throw new NotFoundException();
         }
 
         return carRepository
                 .findById(carId)
-                .map(carRepository::save)
+                .map(car -> {
+                    if(car.getSeller().getEmail().equals(email)) {
+                        return carRepository.save(updatedCar);
+                    } else throw new UnauthorizedException();
+                })
                 .orElseThrow(NotFoundException::new);
     }
 

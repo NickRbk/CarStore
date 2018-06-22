@@ -19,7 +19,7 @@ public interface ICarService {
 
     List<Car> add(Long sellerId, List<CarDTO> carDTOs);
 
-    Car update(Long sellerId, Long carId, Car car);
+    Car update(Long sellerId, Long carId, Car car, String email);
 
-    ResponseEntity<?> delete(Long sellerId, Long carId);
+    ResponseEntity<?> delete(Long sellerId, Long carId, String email);
 }

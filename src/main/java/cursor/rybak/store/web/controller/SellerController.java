@@ -70,7 +70,7 @@ public class SellerController {
                                               Authentication authentication) {
 
         if (isAuthorized(authentication, sellerId)) {
-            return carService.delete(sellerId, carId);
+            return carService.delete(sellerId, carId, (String)authentication.getPrincipal());
         } else throw new UnauthorizedException();
     }
 
@@ -89,7 +89,7 @@ public class SellerController {
                 ReflectionUtils.setField(field, car, V);
             });
 
-            return carService.update(sellerId, carId, car);
+            return carService.update(sellerId, carId, car, (String)authentication.getPrincipal());
         } else throw new UnauthorizedException();
     }
 
