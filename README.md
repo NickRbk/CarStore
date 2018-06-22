@@ -82,7 +82,7 @@ User can add a few cars by one request.
 ]
 ```
 
-- `/sellers/{sellerId}/cars/{carId}` (PUT) - to update info about particular car.
+- `/sellers/{sellerId}/cars/{carId}` (PATCH) - to update info about particular car.
 In BODY write only that fields that should be modified.
 
 ```json
