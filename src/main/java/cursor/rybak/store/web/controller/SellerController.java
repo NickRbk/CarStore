@@ -2,102 +2,80 @@ package cursor.rybak.store.web.controller;
 
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.model.Seller;
-import cursor.rybak.store.exception.NotFoundException;
-import cursor.rybak.store.exception.UnauthorizedException;
+import cursor.rybak.store.exception.UpdateException;
+import cursor.rybak.store.security.SecurityConstants;
+import cursor.rybak.store.security.constants.JWTConstants;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.service.ISellerService;
 import cursor.rybak.store.web.dto.CarDTO;
 import cursor.rybak.store.web.dto.SellerDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@RequestMapping("/sellers")
+@RequestMapping("/auth")
 @AllArgsConstructor
-public class SellerController {
+public class SellerController implements SecurityConstants, JWTConstants {
 
     private ISellerService sellerService;
     private ICarService carService;
 
     @PostMapping("/sign-up")
-    public Seller signUp(@RequestBody
-                         @NotNull
-                         @Valid SellerDTO sellerDTO) {
-
+    public Seller signUp(@RequestBody @NotNull @Valid SellerDTO sellerDTO) {
         return sellerService.signUp(sellerDTO);
     }
 
     @Transactional
-    @GetMapping("/{sellerId}/cars")
-    public List<Car> getAllCarsBySellerId(@PathVariable(value = "sellerId") Long sellerId,
-                                          Authentication authentication) {
-
-
-        if (isAuthorized(authentication, sellerId)) {
-            return carService.getAllCarsBySellerIdAsStream(sellerId)
-                    .collect(Collectors.toList());
-        } else throw new UnauthorizedException();
+    @GetMapping("/cars")
+    public List<Car> getAllCarsBySellerId(@RequestHeader(HEADER_STRING) String token) {
+        return carService.getAllCarsBySellerIdAsStream(getIdFromToken(token))
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    @PostMapping("/{sellerId}/cars")
-    public void addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
-                                      @RequestBody
-                                      @NotNull
-                                      @Valid List<CarDTO> carDTOs,
-                                      Authentication authentication) {
-
-        if (isAuthorized(authentication, sellerId)) {
-            carService.add(sellerId, carDTOs);
-        } else throw new UnauthorizedException();
+    @PostMapping("/cars")
+    public void addCarBySellerId(@RequestBody @NotNull @Valid List<CarDTO> carDTOs,
+                                 @RequestHeader(HEADER_STRING) String token) {
+        carService.add(getIdFromToken(token), carDTOs);
     }
 
-    @DeleteMapping("/{sellerId}/cars/{carId}")
-    public void deleteCarByCarId(@PathVariable(value = "sellerId") Long sellerId,
-                                              @PathVariable(value = "carId") Long carId,
-                                              Authentication authentication) {
-
-        if (isAuthorized(authentication, sellerId)) {
-            carService.delete(sellerId, carId, (String) authentication.getPrincipal());
-        } else throw new UnauthorizedException();
+    @DeleteMapping("/cars/{carId}")
+    public void deleteCarByCarId(@PathVariable(value = "carId") Long carId,
+                                 @RequestHeader(HEADER_STRING) String token) {
+        carService.delete(getIdFromToken(token), carId);
     }
 
-    @PatchMapping("/{sellerId}/cars/{carId}")
-    public void updateCar(@PathVariable Long sellerId,
-                         @PathVariable Long carId,
-                         @RequestBody Map<String, Object> fields,
-                         Authentication authentication) {
-
-
-        if (isAuthorized(authentication, sellerId)) {
-
-            Car car = carService.getCar(carId, sellerId)
-                    .orElseThrow(NotFoundException::new);
-
-
-            fields.forEach((K, V) -> {
-                Field field = ReflectionUtils.findField(Car.class, K);
-                ReflectionUtils.setField(field, car, V);
-            });
-
-            carService.update(sellerId, carId, car, (String) authentication.getPrincipal());
-        } else throw new UnauthorizedException();
+    @PatchMapping("/cars/{carId}")
+    public void updateCar(@PathVariable Long carId,
+                          @RequestBody @NotNull @Valid CarDTO carDTO,
+                          @RequestHeader(HEADER_STRING) String token) {
+        if (carDTO.getId() != null) {
+            carService.update(getIdFromToken(token), carId, carDTO);
+        } else throw new UpdateException();
     }
 
-    private Boolean isAuthorized(Authentication authentication, Long id) {
-        return sellerService.getSellerId((String) authentication.getPrincipal()).equals(id);
+
+    /**
+     * Get userID from token
+     *
+     * @param token JWT token
+     * @return userID
+     */
+    private Long getIdFromToken(String token) {
+        Claims body = Jwts.parser().setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody();
+
+        return Long.parseLong(body.get(USER_ID).toString());
     }
 }

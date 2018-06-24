@@ -5,6 +5,4 @@ import cursor.rybak.store.web.dto.SellerDTO;
 
 public interface ISellerService {
     Seller signUp(SellerDTO sellerDTO);
-
-    Long getSellerId(String email);
 }

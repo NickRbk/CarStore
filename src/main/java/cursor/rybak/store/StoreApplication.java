@@ -10,12 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableJpaAuditing
 public class StoreApplication {
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StoreApplication.class, args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(StoreApplication.class, args);
-	}
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

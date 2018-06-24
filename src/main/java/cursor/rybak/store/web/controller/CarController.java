@@ -18,13 +18,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/store")
 @AllArgsConstructor
 public class CarController {
-
     private ICarService carService;
 
     @Transactional
     @GetMapping()
     public List<Car> getAllCars() {
-
         return carService.getAllAsStream()
                 .collect(Collectors.toList());
     }
@@ -32,7 +30,6 @@ public class CarController {
     @Transactional
     @GetMapping("/car")
     public List<Car> getAllCarsSortedBy(@RequestParam("orderBy") String key) {
-
         return carService.getAllSortedByKeyAsStream(key)
                 .collect(Collectors.toList());
     }

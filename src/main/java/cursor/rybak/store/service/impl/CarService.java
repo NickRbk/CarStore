@@ -6,12 +6,11 @@ import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
 import cursor.rybak.store.exception.InvalidParameterException;
 import cursor.rybak.store.exception.NotFoundException;
-import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.sort.SortCarMap;
 import cursor.rybak.store.web.dto.CarDTO;
+import cursor.rybak.store.web.dto.EntityAdapter;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import static cursor.rybak.store.sort.SortConstants.SORT_CRITERIA;
 @Service
 @AllArgsConstructor
 public class CarService implements ICarService {
-
     private CarRepository carRepository;
     private SellerRepository sellerRepository;
 
@@ -40,8 +38,7 @@ public class CarService implements ICarService {
 
     @Override
     public Stream<Car> getAllSortedByKeyAsStream(String key) {
-
-        if( isValidCriteria(key) ) {
+        if (isValidCriteria(key)) {
             return SortCarMap.getInstance(carRepository)
                     .getSortedMap()
                     .get(key)
@@ -56,61 +53,32 @@ public class CarService implements ICarService {
 
     @Override
     public void add(Long sellerId, List<CarDTO> carDTOs) {
-        List<Car> newCars = new ArrayList<>();
-
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(NotFoundException::new);
-
-        carDTOs.forEach(carDTO -> newCars.add(
-                carRepository.save(Car.builder()
-                        .price(carDTO.getPrice())
-                        .year(carDTO.getYear())
-                        .countryOfRegistration(carDTO.getCountryOfRegistration())
-                        .type(carDTO.getType())
-                        .model(carDTO.getModel())
-                        .mark(carDTO.getMark())
-                        .description(carDTO.getDescription())
-                        .seller(seller)
-                        .build()
-                )
-        ));
+        carRepository.saveAll(getCarsToSave(carDTOs, seller));
     }
 
     @Override
-    public void delete(Long sellerId, Long carId, String email) {
-        if (!sellerRepository.existsById(sellerId)) {
-            throw new NotFoundException();
-        }
-
-        carRepository.findById(carId)
-                .map(car -> {
-                    if(car.getSeller().getEmail().equals(email)) {
-                        carRepository.delete(car);
-                        return ResponseEntity.ok()
-                                .body("CarId " + carId + " deleted successfully");
-                    } else throw new UnauthorizedException();
-                })
-                .orElseThrow(NotFoundException::new);
+    public void delete(Long sellerId, Long carId) {
+        Car car = getCar(carId, sellerId).orElseThrow(NotFoundException::new);
+        carRepository.delete(car);
     }
 
     @Override
-    public void update(Long sellerId, Long carId, Car updatedCar, String email) {
-        if (!sellerRepository.existsById(sellerId)) {
-            throw new NotFoundException();
-        }
-
-        carRepository
-                .findById(carId)
-                .map(car -> {
-                    if(car.getSeller().getEmail().equals(email)) {
-                        return carRepository.save(updatedCar);
-                    } else throw new UnauthorizedException();
-                })
+    public void update(Long sellerId, Long carId, CarDTO carDTO) {
+        Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(NotFoundException::new);
+        carRepository.save(EntityAdapter.getCarFromCarDTO(carDTO, seller));
     }
 
     private boolean isValidCriteria(String criteria) {
         return SORT_CRITERIA.stream()
                 .anyMatch(c -> c.equals(criteria));
+    }
+
+    private List<Car> getCarsToSave(List<CarDTO> carDTOs, Seller seller) {
+        List<Car> cars = new ArrayList<>();
+        carDTOs.forEach(carDTO -> cars.add(EntityAdapter.getCarFromCarDTO(carDTO, seller)));
+        return cars;
     }
 }

@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class SellerDTO {
+    private Long id;
 
     @NotNull(message = "email can not be NULL")
     @Email(message = "INVALID EMAIL")
