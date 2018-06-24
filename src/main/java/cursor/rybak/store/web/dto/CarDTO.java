@@ -10,8 +10,6 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class CarDTO {
-    private Long id;
-
     @NotNull(message = "price can not be NULL")
     private Double price;
 

@@ -6,6 +6,7 @@ import cursor.rybak.store.domain.repository.CarRepository;
 import cursor.rybak.store.domain.repository.SellerRepository;
 import cursor.rybak.store.exception.InvalidParameterException;
 import cursor.rybak.store.exception.NotFoundException;
+import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.sort.SortCarMap;
 import cursor.rybak.store.web.dto.CarDTO;
@@ -60,15 +61,18 @@ public class CarService implements ICarService {
 
     @Override
     public void delete(Long sellerId, Long carId) {
-        Car car = getCar(carId, sellerId).orElseThrow(NotFoundException::new);
+        Car car = getCar(carId, sellerId)
+                .orElseThrow(UnauthorizedException::new);
         carRepository.delete(car);
     }
 
     @Override
     public void update(Long sellerId, Long carId, CarDTO carDTO) {
-        Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(NotFoundException::new);
-        carRepository.save(EntityAdapter.getCarFromCarDTO(carDTO, seller));
+        if (carRepository.getCarByIdAndSellerId(carId, sellerId).isPresent()) {
+            Seller seller = sellerRepository.findById(sellerId)
+                    .orElseThrow(NotFoundException::new);
+            carRepository.save(EntityAdapter.getCarFromCarDTO(carId, carDTO, seller));
+        } else throw new UnauthorizedException();
     }
 
     private boolean isValidCriteria(String criteria) {
@@ -78,7 +82,7 @@ public class CarService implements ICarService {
 
     private List<Car> getCarsToSave(List<CarDTO> carDTOs, Seller seller) {
         List<Car> cars = new ArrayList<>();
-        carDTOs.forEach(carDTO -> cars.add(EntityAdapter.getCarFromCarDTO(carDTO, seller)));
+        carDTOs.forEach(carDTO -> cars.add(EntityAdapter.getCarFromCarDTO(null, carDTO, seller)));
         return cars;
     }
 }

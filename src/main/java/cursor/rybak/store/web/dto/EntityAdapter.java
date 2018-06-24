@@ -5,9 +5,9 @@ import cursor.rybak.store.domain.model.Seller;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class EntityAdapter {
-    public static Car getCarFromCarDTO(CarDTO carDTO, Seller seller) {
+    public static Car getCarFromCarDTO(Long carId, CarDTO carDTO, Seller seller) {
         return Car.builder()
-                .id(carDTO.getId())
+                .id(carId)
                 .price(carDTO.getPrice())
                 .year(carDTO.getYear())
                 .countryOfRegistration(carDTO.getCountryOfRegistration())

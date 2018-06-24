@@ -2,7 +2,6 @@ package cursor.rybak.store.web.controller;
 
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.model.Seller;
-import cursor.rybak.store.exception.UpdateException;
 import cursor.rybak.store.security.SecurityConstants;
 import cursor.rybak.store.security.constants.JWTConstants;
 import cursor.rybak.store.service.ICarService;
@@ -64,9 +63,7 @@ public class AuthController implements SecurityConstants, JWTConstants {
     public void updateCar(@PathVariable Long carId,
                           @RequestBody @NotNull @Valid CarDTO carDTO,
                           @RequestHeader(HEADER_STRING) String token) {
-        if (carDTO.getId() != null) {
-            carService.update(getIdFromToken(token), carId, carDTO);
-        } else throw new UpdateException();
+        carService.update(getIdFromToken(token), carId, carDTO);
     }
 
 
