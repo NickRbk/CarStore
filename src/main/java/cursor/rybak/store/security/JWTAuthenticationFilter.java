@@ -2,6 +2,7 @@ package cursor.rybak.store.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cursor.rybak.store.domain.model.Seller;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;

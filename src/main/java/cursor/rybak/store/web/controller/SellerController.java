@@ -2,6 +2,7 @@ package cursor.rybak.store.web.controller;
 
 import cursor.rybak.store.domain.model.Car;
 import cursor.rybak.store.domain.model.Seller;
+import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
 import cursor.rybak.store.service.ISellerService;
@@ -53,43 +54,46 @@ public class SellerController {
 
     @Transactional
     @PostMapping("/{sellerId}/cars")
-    public List<Car> addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
+    public void addCarBySellerId(@PathVariable(value = "sellerId") Long sellerId,
                                       @RequestBody
                                       @NotNull
                                       @Valid List<CarDTO> carDTOs,
                                       Authentication authentication) {
 
         if (isAuthorized(authentication, sellerId)) {
-            return carService.add(sellerId, carDTOs);
+            carService.add(sellerId, carDTOs);
         } else throw new UnauthorizedException();
     }
 
     @DeleteMapping("/{sellerId}/cars/{carId}")
-    public ResponseEntity<?> deleteCarByCarId(@PathVariable(value = "sellerId") Long sellerId,
+    public void deleteCarByCarId(@PathVariable(value = "sellerId") Long sellerId,
                                               @PathVariable(value = "carId") Long carId,
                                               Authentication authentication) {
 
         if (isAuthorized(authentication, sellerId)) {
-            return carService.delete(sellerId, carId, (String)authentication.getPrincipal());
+            carService.delete(sellerId, carId, (String) authentication.getPrincipal());
         } else throw new UnauthorizedException();
     }
 
     @PatchMapping("/{sellerId}/cars/{carId}")
-    public Car updateCar(@PathVariable Long sellerId,
+    public void updateCar(@PathVariable Long sellerId,
                          @PathVariable Long carId,
                          @RequestBody Map<String, Object> fields,
                          Authentication authentication) {
 
 
         if (isAuthorized(authentication, sellerId)) {
-            Car car = carService.getCar(carId, sellerId);
+
+            Car car = carService.getCar(carId, sellerId)
+                    .orElseThrow(NotFoundException::new);
+
 
             fields.forEach((K, V) -> {
                 Field field = ReflectionUtils.findField(Car.class, K);
                 ReflectionUtils.setField(field, car, V);
             });
 
-            return carService.update(sellerId, carId, car, (String)authentication.getPrincipal());
+            carService.update(sellerId, carId, car, (String) authentication.getPrincipal());
         } else throw new UnauthorizedException();
     }
 

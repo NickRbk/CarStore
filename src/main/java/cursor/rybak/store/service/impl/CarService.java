@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static cursor.rybak.store.sort.SortConstants.SORT_CRITERIA;
@@ -28,7 +29,7 @@ public class CarService implements ICarService {
     private SellerRepository sellerRepository;
 
     @Override
-    public Car getCar(Long carId, Long sellerId) {
+    public Optional<Car> getCar(Long carId, Long sellerId) {
         return carRepository.getCarByIdAndSellerId(carId, sellerId);
     }
 
@@ -54,7 +55,7 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public List<Car> add(Long sellerId, List<CarDTO> carDTOs) {
+    public void add(Long sellerId, List<CarDTO> carDTOs) {
         List<Car> newCars = new ArrayList<>();
 
         Seller seller = sellerRepository.findById(sellerId)
@@ -73,17 +74,15 @@ public class CarService implements ICarService {
                         .build()
                 )
         ));
-
-        return newCars;
     }
 
     @Override
-    public ResponseEntity<?> delete(Long sellerId, Long carId, String email) {
+    public void delete(Long sellerId, Long carId, String email) {
         if (!sellerRepository.existsById(sellerId)) {
             throw new NotFoundException();
         }
 
-        return carRepository.findById(carId)
+        carRepository.findById(carId)
                 .map(car -> {
                     if(car.getSeller().getEmail().equals(email)) {
                         carRepository.delete(car);
@@ -95,12 +94,12 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Car update(Long sellerId, Long carId, Car updatedCar, String email) {
+    public void update(Long sellerId, Long carId, Car updatedCar, String email) {
         if (!sellerRepository.existsById(sellerId)) {
             throw new NotFoundException();
         }
 
-        return carRepository
+        carRepository
                 .findById(carId)
                 .map(car -> {
                     if(car.getSeller().getEmail().equals(email)) {

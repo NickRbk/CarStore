@@ -5,11 +5,12 @@ import cursor.rybak.store.web.dto.CarDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface ICarService {
 
-    Car getCar(Long carId, Long sellerId);
+    Optional<Car> getCar(Long carId, Long sellerId);
 
     Stream<Car> getAllAsStream();
 
@@ -17,9 +18,9 @@ public interface ICarService {
 
     Stream<Car> getAllCarsBySellerIdAsStream(Long sellerId);
 
-    List<Car> add(Long sellerId, List<CarDTO> carDTOs);
+    void add(Long sellerId, List<CarDTO> carDTOs);
 
-    Car update(Long sellerId, Long carId, Car car, String email);
+    void update(Long sellerId, Long carId, Car car, String email);
 
-    ResponseEntity<?> delete(Long sellerId, Long carId, String email);
+    void delete(Long sellerId, Long carId, String email);
 }
