@@ -1,5 +1,6 @@
 package cursor.rybak.store.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

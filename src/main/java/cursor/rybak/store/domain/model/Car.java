@@ -17,22 +17,22 @@ public class Car extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Double price;
+    private Double price;
 
-    public Integer year;
+    private Integer year;
 
     @Column(name = "country_of_registration")
-    public String countryOfRegistration;
+    private String countryOfRegistration;
 
-    public String type;
+    private String type;
 
-    public String model;
+    private String model;
 
-    public String mark;
+    private String mark;
 
-    public String description;
+    private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     private Seller seller;
 }
