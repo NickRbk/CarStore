@@ -33,9 +33,7 @@ public class JWTAuthenticationFilter
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
-
         Seller credentials = new ObjectMapper().readValue(req.getInputStream(), Seller.class);
-
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         credentials.getEmail(),
@@ -49,19 +47,15 @@ public class JWTAuthenticationFilter
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) {
-
         CustomUser user = (CustomUser) auth.getPrincipal();
-
         Claims claims = Jwts.claims();
         claims.put(EMAIL, user.getUsername());
         claims.put(USER_ID, user.getSeller().getId());
-
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
-
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

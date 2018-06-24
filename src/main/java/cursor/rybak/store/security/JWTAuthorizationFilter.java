@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class JWTAuthorizationFilter
         extends BasicAuthenticationFilter
@@ -30,30 +31,23 @@ public class JWTAuthorizationFilter
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res);
-            return;
+        } else {
+            UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            chain.doFilter(req, res);
         }
-
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            // parse the token.
-            String user = (String) Jwts.parser()
-                    .setSigningKey(SECRET.getBytes())
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                    .getBody()
-                    .get(EMAIL);
+        String token = Optional.of(request.getHeader(HEADER_STRING)).orElseThrow(RuntimeException::new);
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
-        }
-        return null;
+        String userName = Optional.of((String) Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody()
+                .get(EMAIL)
+        ).orElseThrow(RuntimeException::new);
+
+        return new UsernamePasswordAuthenticationToken(userName, null, new ArrayList<>());
     }
 }
