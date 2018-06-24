@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/store")
 @AllArgsConstructor
-public class CarController {
+public class StoreController {
     private ICarService carService;
 
     @Transactional

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
-public class SellerController implements SecurityConstants, JWTConstants {
+public class AuthController implements SecurityConstants, JWTConstants {
 
     private ISellerService sellerService;
     private ICarService carService;
