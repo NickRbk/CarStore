@@ -39,14 +39,14 @@ public class SortCarMap implements SortConstants {
     }
 
     private Stream<Car> getAllCarOrderByYear(String key) {
-        return carRepository.getAll().sorted(new OrderByKey(key));
+        return carRepository.getAll().sorted(new OrderByKeyComparator(key));
     }
 
     private Stream<Car> getAllCarOrderByPrice(String key) {
-        return carRepository.getAll().sorted(new OrderByKey(key));
+        return carRepository.getAll().sorted(new OrderByKeyComparator(key));
     }
 
     private Stream<Car> getAllCarOrderByRegistration(String key) {
-        return carRepository.getAll().sorted(new OrderByKey(key));
+        return carRepository.getAll().sorted(new OrderByKeyComparator(key));
     }
 }

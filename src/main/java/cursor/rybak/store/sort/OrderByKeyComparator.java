@@ -4,10 +4,10 @@ import cursor.rybak.store.domain.model.Car;
 
 import java.util.Comparator;
 
-class OrderByKey implements Comparator<Car>, SortConstants {
+class OrderByKeyComparator implements Comparator<Car>, SortConstants {
     private String key;
 
-    OrderByKey(String key) {
+    OrderByKeyComparator(String key) {
         this.key = key;
     }
 
