@@ -6,8 +6,8 @@ There are 2 main roles:
 - sellers - users, that must be logged in to manipulate cars
 information (only information they added).
 
-There are the below routes for Sellers:
-- `/sellers/sign-up` (POST) - to sigh up seller
+_**There are the below routes for Sellers**_:
+- `/auth/sign-up` (POST) - to sigh up seller
 
 ```json
 {
@@ -28,7 +28,7 @@ There are the below routes for Sellers:
 }
 ```
 
-- `/sellers/{sellerId}/cars` (POST) - to create new car board.
+- `/auth/cars` (POST) - to create new car board.
 User can add a few cars by one request.
 ```json
 [
@@ -53,7 +53,7 @@ User can add a few cars by one request.
 ]
 ```
 
-- `/sellers/{sellerId}/cars` (GET) - to get all seller's cars. Return in the next format:
+- `/auth/cars` (GET) - to get all seller's cars. Return in the next format:
 ```json
 [
     {
@@ -77,24 +77,28 @@ User can add a few cars by one request.
             "password": "$2a$10$fSB1fuj1CkWDaJRjMv0QR.GUsDCMYbKDABOf8B4Prvckie3buMt6i",
             "phoneNumber": "xxxxx"
         }
-    },
-    ...
+    }
 ]
 ```
 
-- `/sellers/{sellerId}/cars/{carId}` (PATCH) - to update info about particular car.
-In BODY write only that fields that should be modified.
+- `/auth/cars/{carId}` (PATCH) - to update info about particular car.
 
 ```json
-{
-	"price": 900000.0
-}
+	{
+		"price": 2300,
+		"year": 2018,
+		"countryOfRegistration": "FRANCE",
+		"description": "NEW BEST FRANCE CAR",
+		"model": "Vuyer",
+		"type": "leight",
+		"mark": "tyugh"
+	}
 ``` 
 
-- `/sellers/{sellerId}/cars/{carId}` (DELETE) - to delete info about particular car
+- `/auth/cars/{carId}` (DELETE) - to delete info about particular car
 
 
-There are the below routes for Buyers:
+_**There are the below routes for Buyers**_:
 - `/store` (GET) - to get all cars in store.
 - `/store/car?orderBy={{HERE_ORDER_CRITERIA}}` (GET) - to get cars sorted by criteria
 (year, price, registration). So there are 3 options to order car:
