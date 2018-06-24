@@ -1,6 +1,4 @@
 spring:
-  liquibase:
-    change-log: classpath:/db/changelog.xml
   datasource:
     url: jdbc:postgresql://172.17.0.2:5432/car-store
     username: postgres
