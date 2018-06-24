@@ -8,7 +8,7 @@ import cursor.rybak.store.exception.InvalidParameterException;
 import cursor.rybak.store.exception.NotFoundException;
 import cursor.rybak.store.exception.UnauthorizedException;
 import cursor.rybak.store.service.ICarService;
-import cursor.rybak.store.sort.SortCarMap;
+import cursor.rybak.store.sort.OrderByKeyComparator;
 import cursor.rybak.store.web.dto.CarDTO;
 import cursor.rybak.store.web.dto.EntityAdapter;
 import lombok.AllArgsConstructor;
@@ -40,10 +40,7 @@ public class CarService implements ICarService {
     @Override
     public Stream<Car> getAllSortedByKeyAsStream(String key) {
         if (isValidCriteria(key)) {
-            return SortCarMap.getInstance(carRepository)
-                    .getSortedMap()
-                    .get(key)
-                    .apply(key);
+            return carRepository.getAll().sorted(new OrderByKeyComparator(key));
         } else throw new InvalidParameterException();
     }
 
