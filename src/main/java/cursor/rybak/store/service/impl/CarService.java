@@ -43,7 +43,7 @@ public class CarService implements ICarService {
             return SortCarMap.getInstance(carRepository)
                     .getSortedMap()
                     .get(key)
-                    .get();
+                    .apply(key);
         } else throw new InvalidParameterException();
     }
 

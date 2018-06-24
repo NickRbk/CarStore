@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class SortCarMap implements SortConstants {
@@ -15,7 +15,7 @@ public class SortCarMap implements SortConstants {
     private final CarRepository carRepository;
 
     @Getter
-    private Map<String, Supplier<Stream<Car>>> sortedMap;
+    private Map<String, Function<String, Stream<Car>>> sortedMap;
 
     private SortCarMap(CarRepository carRepository) {
         this.carRepository = carRepository;
@@ -29,8 +29,8 @@ public class SortCarMap implements SortConstants {
         return instance;
     }
 
-    private Map<String, Supplier<Stream<Car>>> generateSortedMap() {
-        Map<String, Supplier<Stream<Car>>> sortedMap = new HashMap<>();
+    private Map<String, Function<String, Stream<Car>>> generateSortedMap() {
+        Map<String, Function<String, Stream<Car>>> sortedMap = new HashMap<>();
         sortedMap.put(YEAR, this::getAllCarOrderByYear);
         sortedMap.put(PRICE, this::getAllCarOrderByPrice);
         sortedMap.put(REGISTRATION, this::getAllCarOrderByRegistration);
@@ -38,15 +38,15 @@ public class SortCarMap implements SortConstants {
         return sortedMap;
     }
 
-    private Stream<Car> getAllCarOrderByYear() {
-        return carRepository.getAllAndOrderByYear();
+    private Stream<Car> getAllCarOrderByYear(String key) {
+        return carRepository.getAll().sorted(new OrderByKey(key));
     }
 
-    private Stream<Car> getAllCarOrderByPrice() {
-        return carRepository.getAllAndOrderByPrice();
+    private Stream<Car> getAllCarOrderByPrice(String key) {
+        return carRepository.getAll().sorted(new OrderByKey(key));
     }
 
-    private Stream<Car> getAllCarOrderByRegistration() {
-        return carRepository.getAllAndOrderByCountryOfRegistration();
+    private Stream<Car> getAllCarOrderByRegistration(String key) {
+        return carRepository.getAll().sorted(new OrderByKey(key));
     }
 }
